@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+
+    api:
+      build: ./api
+      ports:
+        - "1260:5000" 
+      environment:
+        - DATABASE_URL=postgresql://user:password@db:5432/postgres
+      restart: always
+
+    db:
+      image: postgres:12
+      environment:
+        PGDATA: /var/lib/postgresql/data/pgdata
+        POSTGRES_USER: user
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: db_test
+#      volumes:
+#       - ./data-init:/docker-entrypoint-initdb.d
+
+    adminer:
+      image: adminer
+      ports:
+        - "1261:8080" 
+    
+    pgadmin4:
+      image: dpage/pgadmin4
+      environment:
+        PGADMIN_DEFAULT_PASSWORD: password
+        PGADMIN_DEFAULT_EMAIL: kerbrat.erwan@gmail.com
+        PGADMIN_CONFIG_SERVER_MODE: 'True'
+      ports:
+        - "1262:80" 
+
